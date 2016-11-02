@@ -1,20 +1,27 @@
-function Snowfall(c) {
-    var color = c;
+/**
+ * Creates a snowfall effect
+ *
+ * @param color string (optional) #000000
+ * @constructor
+ */
+function Snowfall(color) {
+    color = color || '#000000';
 
-    //setInterval(createFlake, 3000);
-    createFlake();
+    setInterval(createFlake, 3000);
+    //createFlake();
 
     function createFlake() {
         var random  = Math.floor(Math.random() * 50) + 1;
         var size = random - (random % 2);
-        //console.log(size);
+        var minX = -size;
+        var maxX = document.body.clientWidth + size;
 
         var flake = document.createElement('canvas');
         flake.width  = size;
         flake.height = size;
         flake.style.position = 'absolute';
-        flake.style.left = 0;
-        flake.style.top  = 0;
+        flake.style.left = Math.floor((Math.random() * maxX) + minX) +'px';
+        flake.style.top  = -size +'px';
 
         var ctx = flake.getContext('2d');
         ctx.beginPath();
@@ -28,7 +35,6 @@ function Snowfall(c) {
 
         function moveFlake(flake) {
             var move = setInterval(function(){
-                //console.log('moving..');
                 var left = flake.style.left;
                 var top = flake.style.top;
 
@@ -38,7 +44,7 @@ function Snowfall(c) {
                 flake.style.left = (Number(left) + 10) +'px';
                 flake.style.top  = (Number(top) + 10) +'px';
 
-                if(left > 30) {
+                if(left > maxX) {
                     console.log('remove');
                     flake.remove();
                     clearInterval(move);

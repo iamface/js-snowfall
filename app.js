@@ -1,1 +1,1 @@
-new Snowfall(0xffffff);
+new Snowfall();
