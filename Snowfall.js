@@ -7,20 +7,19 @@
 function Snowfall(color) {
     color = color || '#000000';
 
-    setInterval(createFlake, 3000);
-    //createFlake();
+    setInterval(createFlake, 100);
 
     function createFlake() {
-        var random  = Math.floor(Math.random() * 50) + 1;
+        var random  = Math.floor(Math.random() * 10) + 1;
         var size = random - (random % 2);
-        var minX = -size;
-        var maxX = document.body.clientWidth + size;
+        var minXpos = -size;
+        var maxXpos = document.body.clientWidth + size;
 
         var flake = document.createElement('canvas');
         flake.width  = size;
         flake.height = size;
         flake.style.position = 'absolute';
-        flake.style.left = Math.floor((Math.random() * maxX) + minX) +'px';
+        flake.style.left = Math.floor((Math.random() * maxXpos) + minXpos) +'px';
         flake.style.top  = -size +'px';
 
         var ctx = flake.getContext('2d');
@@ -34,6 +33,9 @@ function Snowfall(color) {
         moveFlake(flake);
 
         function moveFlake(flake) {
+            var drift = (Math.floor((Math.random() * -2)) + Math.ceil((Math.random() * 2))) + 1;
+            var fall  = Math.floor((Math.random() * 2) + 1);
+
             var move = setInterval(function(){
                 var left = flake.style.left;
                 var top = flake.style.top;
@@ -41,15 +43,15 @@ function Snowfall(color) {
                 left = left.substring(0, left.indexOf('px'));
                 top = top.substring(0, top.indexOf('px'));
 
-                flake.style.left = (Number(left) + 10) +'px';
-                flake.style.top  = (Number(top) + 10) +'px';
+                flake.style.left = (Number(left) + drift) +'px';
+                flake.style.top  = (Number(top) + fall) +'px';
 
-                if(left > maxX) {
+                if(left > maxXpos || top > window.innerHeight + size) {
                     console.log('remove');
                     flake.remove();
                     clearInterval(move);
                 }
-            }, 1000);
+            }, 10);
         }
     }
 }
